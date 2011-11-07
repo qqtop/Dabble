@@ -1,7 +1,6 @@
 library(quantstrat)
 library(PerformanceAnalytics)
 
-
 # macd strategy for quantstrat 
 # with optimisation code 
 
@@ -13,14 +12,12 @@ library(PerformanceAnalytics)
 
 ## How to run this code ??
 ## in R-Stuidio increase the plot window size 
-## best run top halve first than optimisation
 
 
 # clear out old portfolios and orders
 try(rm(list=ls(pos=.blotter),pos=.blotter),silent=TRUE)
 try(rm(list=ls(pos=.strategy),pos=.strategy),silent=TRUE)
 # init currency and stocks
-
 
 # note results may change from day to day because 
 # of dynamic dates and new data being pulled in
@@ -29,9 +26,9 @@ try(rm(list=ls(pos=.strategy),pos=.strategy),silent=TRUE)
 fromd=Sys.Date()-365
 tod=Sys.Date()
 
-setSymbolLookup(STHK=list(src="yahoo",from=fromd,to=tod,name="2888.HK"))
-setSymbolLookup(LUM=list(src="yahoo",from=fromd,to=tod,name="0067.HK"))
-setSymbolLookup(CSR=list(src="yahoo",from=fromd,to=tod,name="1766.HK"))
+setSymbolLookup(STHK=list(src="yahoo",from=fromd,to=tod,name="2688.HK"))
+setSymbolLookup(LUM=list(src="yahoo",from=fromd,to=tod,name="1133.HK"))
+setSymbolLookup(CSR=list(src="yahoo",from=fromd,to=tod,name="2727.HK"))
 #setSymbolLookup(CSC=list(src="yahoo",from=fromd,to=tod,name="3311.HK"))
 
 #stock.str <- c("STHK","LUM","CSR","CSC")
@@ -176,7 +173,9 @@ omega <- as.numeric(Omega(rets))
 res.vec[i] <- omega
 
 # show some interim results so we see whats going on
-print(c("Info"))
+
+cat(c("Info"))
+cat("   ")
 print(c("Run  : ",i," of ",num.opts))
 ts=tradeStats(strat.name)[,c("Symbol","Num.Trades","Net.Trading.PL","maxDrawdown")]
 print(ts)
