@@ -13,6 +13,7 @@ library(PerformanceAnalytics)
 
 ## How to run this code ??
 ## in R-Stuidio increase the plot window size 
+## best run top halve first than optimisation
 
 
 # clear out old portfolios and orders
