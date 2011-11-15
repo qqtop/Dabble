@@ -1,4 +1,3 @@
-
 library(quantstrat)
 library(PerformanceAnalytics)
 
@@ -27,13 +26,13 @@ try(rm(list=ls(pos=.strategy),pos=.strategy),silent=TRUE)
 fromd=Sys.Date()-365
 tod=Sys.Date()
 
-setSymbolLookup(AST=list(src="yahoo",from=fromd,to=tod,name="3323.HK"))
-setSymbolLookup(BST=list(src="yahoo",from=fromd,to=tod,name="1133.HK"))
-setSymbolLookup(CST=list(src="yahoo",from=fromd,to=tod,name="2727.HK"))
+setSymbolLookup(STHK=list(src="yahoo",from=fromd,to=tod,name="2688.HK"))
+setSymbolLookup(LUM=list(src="yahoo",from=fromd,to=tod,name="1133.HK"))
+setSymbolLookup(CSR=list(src="yahoo",from=fromd,to=tod,name="2727.HK"))
 #setSymbolLookup(CSC=list(src="yahoo",from=fromd,to=tod,name="3311.HK"))
 
-#stock.str <- c("STHK","LUM","CSR","CSC") # 2888.HK,0067.HK,1766.HK,3311.HK
-stock.str <- c("AST","BST","CST")
+#stock.str <- c("STHK","LUM","CSR","CSC")
+stock.str <- c("STHK","LUM","CSR")
 
 # download stocks
 start.data <- fromd
@@ -185,9 +184,7 @@ print(c("Parameters: ",fastMA,slowMA,signalMA))
 print(c("   "))
 
 # of course we want to know which one is best so
-if(sum(ts[3]) != bestPL)
- {
-  if (sum(ts[3]) > origPL )
+if(sum(ts[3]) > bestPL )
   {
     bestRUN <- i
     bestTS <- ts
@@ -197,7 +194,9 @@ if(sum(ts[3]) != bestPL)
     bestsignalMA <- signalMA
     bestRets=rets
   }
- }
+ 
+######################
+
 }
 
 ##Overall Result of optimisation suggestion
@@ -206,15 +205,13 @@ par(mfrow=c(4,1),cex=1)
 textplot(cbind("Best Run : ",bestRUN," of ",num.opts),show.colnames=FALSE,show.rownames=FALSE,halign="left")
 title(main="                                                  Optimization Result")
 textplot(bestTS,halign="left")
-if (bestPL==0) bestPL="No improvement"
 textplot(rbind("Original/Optimized P/L ",rbind(origPL,bestPL)),show.colnames=FALSE,show.rownames=FALSE,halign="left")
 textplot(rbind(c("Original/Optimized"),c("fastMA","slowMA","signalMA"),c(origfastMA,origslowMA,origsignalMA),c(bestfastMA,bestslowMA,bestsignalMA)),show.colnames=FALSE,show.rownames=FALSE,halign="left")
 Sys.sleep(5)
 # now we f*%#@# plot
-dev.new()
+#dev.new()
 charts.PerformanceSummary(merge(origrets,bestRets),colorset = c("green2","red"),main="Portfolio Returns : Original (green) Optimisation Returns (red)",legend.loc="topleft",xlab="")
-
-
+#legend("topleft",c("green2", "red"), c("Original", "Optimisation"), title = "")
  
 ### THATS IT 2011/11/04-6
 
