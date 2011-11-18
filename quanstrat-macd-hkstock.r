@@ -26,9 +26,9 @@ try(rm(list=ls(pos=.strategy),pos=.strategy),silent=TRUE)
 fromd=Sys.Date()-365
 tod=Sys.Date()
 
-setSymbolLookup(STHK=list(src="yahoo",from=fromd,to=tod,name="2688.HK"))
-setSymbolLookup(LUM=list(src="yahoo",from=fromd,to=tod,name="1133.HK"))
-setSymbolLookup(CSR=list(src="yahoo",from=fromd,to=tod,name="2727.HK"))
+setSymbolLookup(STHK=list(src="yahoo",from=fromd,to=tod,name="2888.HK"))
+setSymbolLookup(LUM=list(src="yahoo",from=fromd,to=tod,name="0067.HK"))
+setSymbolLookup(CSR=list(src="yahoo",from=fromd,to=tod,name="1766.HK"))
 #setSymbolLookup(CSC=list(src="yahoo",from=fromd,to=tod,name="3311.HK"))
 
 #stock.str <- c("STHK","LUM","CSR","CSC")
