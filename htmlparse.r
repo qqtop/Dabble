@@ -8,7 +8,7 @@ library(Hmisc)
 # updated about every 15 minutes or so
 # Now we can use latest data from BANK OF CHINA rather than OANDA ......
 # note a file tmpforex will be created and after usage removed
-# pp 2011/11/19
+# 2011/11/19
 
 
 html <- getURL("http://www.bochk.com/whk/tradingrates/getForexRate.do?lang=en&hd_str_langType=E&IRATECUR=",followlocation=TRUE)
@@ -21,6 +21,8 @@ htmltext <- paste(plain.text, collapse = "\t")
 sink("tmpforex.txt")
 cat(htmltext)
 sink()
+
+# see help(file) for away without creating a disk file
 
 # read file back into a variable s
 con<-file("tmpforex.txt")
@@ -63,8 +65,7 @@ for (j in (1:NROW(s)))
 print(mcc)
 print(mcr)
 
-
-# example
+## example
 # show USD
 mcr[3,]
 # show cur name
@@ -77,6 +78,7 @@ mcr[3,3]
 #print(gsub("[\t ]", " ", lastupdate))
 print(gsub("[\t]", "", lastupdate))
 
+## nice formated textplot
 result=mcr
 plot.new()
 textplot(Hmisc::format.df(result,na.blank=TRUE,show.colnames = FALSE, numeric.dollar=FALSE, cdec=rep(5,dim(result)[2])),  rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,4,0)+0.1)
