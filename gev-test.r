@@ -49,9 +49,9 @@ colnames(ret.mat)<-c(paste(aname,"Returns"))
 ret.type='arithmetic'
 ret.mat<-as.timeSeries(dailyReturn(ASTOCK[,4],type=ret.type)*100)
 GEV.Quarters<-gevFit(-ret.mat,block='quarterly')
-tstamp<-timeSequence(from=as.Date(fromd),to=as.Date(tod),by="quarter")
-Quarters.max<-aggregate(-ret.mat,tstamp,max)
-Quarters.sort<-sort(seriesData(Quarters.max))
+tstamp<-timeSequence(from=as.Date(beg),to=as.Date(ed),by="quarter")
+Quarters.max<-aggregate(-ret.mat,tstamp,match.fun(max))
+Quarters.sort<-sort(series(Quarters.max))
 
 xi.q<-GEV.Quarters@fit$par.ests[1]
 mu.q<-GEV.Quarters@fit$par.est[2]
@@ -59,7 +59,8 @@ beta.q<-GEV.Quarters@fit$par.ests[3]
 
 Quarters.fitplot<-gevSim(model=list(xi=xi.q,mu=mu.q,beta=beta.q),n=100000)
 
-x11()
+if(.Platform$OS.type == "unix") {x11()} else {windows() }
+
 layout(matrix(c(1,2,3,4),nrow=2,ncol=2))
 par(mai=c(0.75,0.75,0.7,0.3),cex.main=0.85,cex.lab=0.85,cex=0.75,cex.axis=0.85,bty='n')
 plot(Quarters.max,type='s',main="Quarters Maxima (Losses)")
@@ -70,7 +71,7 @@ lines(density(Quarters.fitplot),type='l',col="darkblue",lwd=2)
 legend(cex=0.85,bty='n',"topright",fill=c("darkred","darkblue"),legend=c("Actual density","Simulated GEV"))
 
 # Diagnostics
-x11()
+if(.Platform$OS.type == "unix") {x11()} else {windows() }
 layout(matrix(c(1,2,3,4),nrow=2,ncol=2))
 par(mai=c(0.75,0.75,0.7,0.3),cex.main=0.85,cex.lab=0.85,cex=0.75,cex.axis=0.85,bty='n')
 for(i in 1:4){
@@ -83,8 +84,8 @@ cat('The probability of next quarters maximal loss exceeding all past maxima is 
 
 # Monthly
 GEV.Monthly<-gevFit(-ret.mat,block='monthly')
-tstamp<-timeSequence(from=as.Date(fromd),to=as.Date(tod),by="month")
-Months.max<-aggregate(-ret.mat,tstamp,max)
+tstamp<-timeSequence(from=as.Date(beg),to=as.Date(ed),by="month")
+Months.max<-aggregate(-ret.mat,tstamp,match.fun(max))
 Months.sort<-sort(seriesData(Months.max))
 
 xi.m<-GEV.Monthly@fit$par.ests[1]
@@ -93,7 +94,7 @@ beta.m<-GEV.Monthly@fit$par.ests[3]
 
 Months.fitplot<-gevSim(model=list(xi=xi.m,mu=mu.m,beta=beta.m),n=100000)
 
-#x11()
+#if(.Platform$OS.type == "unix") {x11()} else {windows() }
 layout(matrix(c(1,2,3,4),nrow=2,ncol=2))
 par(mai=c(0.75,0.75,0.7,0.3),cex.main=0.85,cex.lab=0.85,cex=0.75,cex.axis=0.85,bty='n')
 plot(Months.max,type='s',main="Monthly Maxima (Losses)")
@@ -104,7 +105,7 @@ lines(density(Months.fitplot),type='l',col="darkblue",lwd=2)
 legend(cex=0.85,bty='n',"topright",fill=c("darkred","darkblue"),legend=c("Actual density","Simulated GEV"))
 
 # Diagnostics
-x11()
+if(.Platform$OS.type == "unix") {x11()} else {windows() }
 layout(matrix(c(1,2,3,4),nrow=2,ncol=2))
 par(mai=c(0.75,0.75,0.7,0.3),cex.main=0.85,cex.lab=0.85,cex=0.75,cex.axis=0.85,bty='n')
 for(i in 1:4){
@@ -122,9 +123,8 @@ myresult=rbind(round(Months.prob*100,2),round(Quarters.prob*100,2))
 colnames(myresult)=c("Probability")
 rownames(myresult)=c("Months","Quaters")
 myresult
-x11()
+if(.Platform$OS.type == "unix") {x11()} else {windows() }
 mytitle=paste("Probability of loss exceeding past maxima(loss) for :",aname)
 TableMaker(myresult,title=mytitle)
 
 ############### THATS's IT ####################################
-

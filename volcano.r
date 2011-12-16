@@ -36,7 +36,7 @@ for (i in 1:len){
   num <- as.numeric(unlist(strsplit(char, " ")))
   lat[[i]] <- num[[1]]
   lon[[i]] <- num[[2]]
-  }  
+  }
 vlc <- data.frame(lat, lon)
 
 lx=length(vlc$lat)
@@ -46,12 +46,13 @@ for (j in 1:10) vradius[j] = 12
 
 symbols(tail(vlc$lon,lx),tail(vlc$lat,lx), lwd = 1, bg = "tomato", fg = "tomato",circles = vradius, inches = 0.175, add = TRUE)
 
-leg.txt <- c("Earthquakes","Volcanoes")
 
 mylabel=paste("Since : ", Sys.Date()-7)
-text(100, -80, labels = mylabel, col = "black",main="Earthquakes and Volcano Eruptions")
+leg.txt <- c("Earthquakes","Volcanoes")
+alabel=Sys.Date()
+text(100, -80, labels = mylabel, col = "black")
 colors = c("#99ccff", "tomato")
-title(paste("Earthquakes and Volcano Eruptions ",date))
+title(paste("Earthquakes and Volcano Eruptions ",alabel))
 legend("bottomleft", leg.txt, fill=colors)
 
 
@@ -59,5 +60,4 @@ legend("bottomleft", leg.txt, fill=colors)
 
 ################# THATS IT ########################################
 #quit("no")
-
 
