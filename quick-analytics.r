@@ -29,10 +29,13 @@ LC=Cl(ASTOCK["2011::"])
 STH=na.omit(merge(HR["2007::"],LR,BR))
 ST=merge(LR,BR)
 
+# now should run on linux and windows
+myfunc<-function() if(.Platform$OS.type == "unix") {x11()} else {windows() }
+
 # charts
-x11()
+myfunc()
 charts.PerformanceSummary(STH["2011::"],ylog=TRUE, colorset = c(9,2,3),main="Performance")
-x11()
+myfunc()
 par(mfrow=c(3,2))
 chart.RollingCorrelation(ST["2011::"],HR["2011::"],legend.loc="bottomleft",colorset = (2:12),main="Corelation")
 chart.RollingRegression(ST["2011::"],HR["2011::"],legend.loc="topright",colorset = (2:12))
@@ -42,20 +45,20 @@ chart.RelativePerformance(ST["2011::"],HR["2011::"], legend.loc="topright",color
 chart.CumReturns(STH["2011::",drop=FALSE],wealth.index=TRUE, legend.loc="topleft",colorset = c(9,2,3),main="Growth of $1")
 
 #Scatterplots
-x11()
+myfunc()
 chart.RiskReturnScatter(STH["2011::"], Rf = 0, colorset = c(9,2,3),add.boxplots = TRUE)
-x11()
+myfunc()
 chart.Correlation(STH["2011::"], histogram = TRUE,main="Correlation")
 
 ##ACF/PACF uncomment if required
-# x11()
+# myfunc()
 # chart.ACFplus(HR["2011::"],main="HSI ACF/PACF")
-# x11()
+# myfunc()
 # chart.ACFplus(LR["2011::"],main=paste(aname,"ACF/PACF"))
-# x11()
+# myfunc()
 # chart.ACFplus(BR["2011::"],main=paste(bname,"ACF/PACF"))
 
-x11()
+myfunc()
 par(mfrow=c(2,2))
 try(chart.VaRSensitivity(na.omit(HR)))
 try(chart.VaRSensitivity(na.omit(LR)))
@@ -63,14 +66,14 @@ try(chart.VaRSensitivity(na.omit(BR)))
 try(chart.VaRSensitivity(na.omit(STH),main=paste("Combined Risk Confidence for HSI/",aname,"/",bname,sep="")))
 
 #Histogram of Returns
-x11()
+myfunc()
 par(mfrow=c(2,2))
 chart.Histogram(HR["2011::"],methods=c("add.density","add.risk","add.rug","add.centered"))
 chart.Histogram(LR["2011::"],methods=c("add.density","add.risk","add.rug","add.centered"))
 chart.Histogram(BR["2011::"],methods=c("add.density","add.risk","add.rug","add.centered"))
 
 require(ggplot2)
-x11()
+myfunc()
 clientPerf<-na.omit(STH)
 returns.cumul <- xts(apply((1+clientPerf),MARGIN=2,FUN=cumprod),order.by=index(clientPerf))
 returns.cumul.Melt <- melt(as.data.frame(cbind(index(returns.cumul),
@@ -131,16 +134,16 @@ downs<-table.DownsideRisk(STH["2011::"], Rf=0.04/12, MAR=0.05/12, p=.95)
 
 trailp<-table.TrailingPeriods(STH["2011::"],periods=c(12,24,36,60,180,NROW(STH)),FUNCS="Return.annualized")
 
-
-a<-getQuote(aname)
-b<-getQuote(bname)
-c<-getQuote("^HSI")
-print(rbind(c,a,b)[,c(1,2,4,6,7,8)])
-
 a<-CalmarRatio(HR["2011::"])
 b<-CalmarRatio(LR["2011::"])
 c<-CalmarRatio(BR["2011::"])
 calmar<-cbind(a,b,c)
+
+a<-getQuote(aname)
+b<-getQuote(bname)
+c<-getQuote("^HSI")
+lastprice<-rbind(c,a,b)[,c(1,2,4,6,7,8)]
+
 
 datebase=as.numeric(Sys.Date()-as.Date("2011-01-01"))
 a<-0.000
@@ -164,7 +167,7 @@ sdm<-sd.multiperiod(STH[,drop=FALSE],scale=12)
 wdrawd<-round(maxDrawdown(STH),4)
 
 #Cumulative returns
-x11()
+myfunc()
 a<-tail(cumprod(1+HR["2011::"]),10)
 b<-tail(cumprod(1+LR["2011::"]),10)
 c<-tail(cumprod(1+BR["2011::"]),10)
@@ -179,5 +182,10 @@ cvr<-ES(STH["2011::",drop=FALSE],p=0.95,clean="boudt",method="modified")
 rownames(cvr)="ES (CVar) p=0.95"
 supertable<-rbind(table.Stats(STH["2011::"]),sharp,calinf,cvr,sda,sdm,smi,downs,trailp,wdrawd)
 print(supertable)
+#latest Quotes from Yahoo
+print(lastprice)
 
 ########################## THAT'S IT #############################################
+
+
+

@@ -127,4 +127,6 @@ if(.Platform$OS.type == "unix") {x11()} else {windows() }
 mytitle=paste("Probability of loss exceeding past maxima(loss) for :",aname)
 TableMaker(myresult,title=mytitle)
 
-############### THATS's IT ####################################
+############### THATS's IT   ####################################
+
+
