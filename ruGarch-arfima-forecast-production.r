@@ -3,7 +3,12 @@ rm(list=ls())
 
 require(rugarch)
 require(quantmod)
-# self
+
+# Forecasting share closing prices 
+# based on Rugarch help file
+# No guarantees, warrantees or anything given nor implied
+# Use at your own peril .
+
 # get some data to play with
 tic = Sys.time() # time the whole process
 #Sys.setenv(TZ="Asia/Hong Kong")
@@ -31,7 +36,6 @@ colnames(ASTOCKcl)=aname
 myfunc<-function() if(.Platform$OS.type == "unix") {x11()} else {windows() }
 #####################################
 
-## DATA TO USE : WHAT SHALL IT BE: SELECT ONE OF THE XXXret OR XXXcl above
 sq=getQuote(aname)  # select correct stockcode reference
 
 #tail(adata)
