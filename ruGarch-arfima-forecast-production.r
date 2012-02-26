@@ -17,7 +17,7 @@ fromd="2009-01-01"
 tod=Sys.Date()
 
 #STOCKCODE TO TEST
-aname="STAN.L"
+aname="0067.HK"
 
 #GET SOME BETTER LOOKING QUOTE DATA AND THE ACTUAL NAME
 ydata=getQuote(aname,what=yahooQF(c("Name","Date","Last Trade (Price Only)","Change","Days Range","52-week Range")))
@@ -36,7 +36,7 @@ colnames(ASTOCKcl)=aname
 myfunc<-function() if(.Platform$OS.type == "unix") {x11()} else {windows() }
 #####################################
 
-sq=getQuote(aname)  # select correct stockcode reference
+sq=getQuote(aname)  
 
 #tail(adata)
 # now we bind the latest close from getQuote to the close price from getSymbols
@@ -46,14 +46,24 @@ x.Date=as.Date(sq[,"Trade Time"])
 sxx=as.xts(sq["Last"],order.by=x.Date)   # give cols the same name
 data=rbind(ASTOCKcl,sxx)
 
-###Note for return data we would need -- 
-#dataret<-dailyReturn(data)
+###Note for return data we would need -- just change the data parameter below to datare
+dataret<-dailyReturn(data)
 
 #### Note we still need a way to make sure data is unique
-data<-data[unique=T]
-#dataret<-dataret[unique=T]
-#colnames(dataret)=aname
-######################################
+data<-make.index.unique(data,drop=TRUE)
+dataret<-make.index.unique(dataret,drop=TRUE)
+colnames(dataret)=aname
+
+###############################################################################################
+# Note for price forecasting at this point we have 4 datasets available
+# 1) data      -- this hold the historic price from yahoo and the latest quote , 
+#                 there maybe 1-3 datapoints missing depending on yahoo
+# 2) dataret   -- as above but as daily returns
+# 3) ASTOCKcl  -- original historic data
+# 4) ASTOCKret -- original historic data daily returns
+# 
+# Select one to use in the fit of the arfima model below
+###############################################################################################
 ##Here we do the forecast using closing price data + current/latest quote
 # Long Horizon Forecast
 fit = vector(mode = "list", length = 9)
@@ -72,6 +82,7 @@ cfmatrix[i, match(names(cf), colnames(cfmatrix))] = cf
 }
 umean = rep(0, 9)
 for(i in 1:9){
+  if ( !is.null(likelihood(fit[[i]])))
 umean[i] = uncmean(fit[[i]])
 }
 forc = vector(mode = "list", length = 9)
@@ -124,7 +135,6 @@ fcc=as.xts(fc,order.by=as.Date(index(fc)))  ##this fixes the date column
 myfunc()
 par(mfrow=c(1,2))
 #chart_Series(as.xts(as.data.frame(forc[[1]])),name="ARFIMA Forecast Result")
-
 ## this plot shows the forcasted part only
 clrs = rainbow(9, alpha = 1, start = 0.4, end = 0.95)
 plot(na.omit(as.xts(as.data.frame(forc2[[1]]))),main=paste(aname,"ruGarch Price Modeling Forecast"))
@@ -174,7 +184,7 @@ chartSeries(as.xts(as.data.frame(forc2[[1]])),layout=NULL,yrange=c(smin,smax),na
 for (i in 2:9){
   if (NROW(as.xts(as.data.frame(forc2[[i]])))  > 0){
      #print(paste("Dist: ",dist[i]))
-     #chart_Series did not show in the loop but ok if called directly
+     #print(chart_Series...) did not show in the loop but ok if called directly
      chartSeries(as.xts(as.data.frame(forc2[[i]])),layout=NULL,yrange=c(smin,smax),name=paste(dist[i],"ARFIMA Forecast Result"))
   }
 }
@@ -184,9 +194,18 @@ for (i in 2:9){
 cat(paste("\n\n5 Day Forecasts for :",aname,ydata$Name,"\n"))
 cat("Distributions\n")
 print(fcc)
+cat("\n\nDistibutions Mean\n")
+distmean=NULL
+for (i in 1:9) distmean[i]=mean(fcc[,i])
+distmean=rbind(distmean)
+colnames(distmean)=dist
+print(distmean)
+
+
 cat("\n\nLast Trade data\n")
 print(ydata)
 cat("\n\n\n Finished Forecast - Now we know the future or not.\n\n\n\n")
 
 
 #####THAT's IT #############################################################
+
