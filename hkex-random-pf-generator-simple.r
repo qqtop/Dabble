@@ -1,7 +1,7 @@
 # Random Portfolio creator based on HKEX Stocks
 # selected from the mainboard or gemboard
 # http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm
-# Last tested 2012-09-02
+# Last tested 2013-08-01
 
 new.env()
 #rm(list = ls(all = TRUE)) #CLEAR WORKSPACE
@@ -18,6 +18,7 @@ cols <- colorRampPalette(brewer.pal(5,"Dark2"))(6)
 
 #HKEX GEM
 #rawCODE <- readHTMLTable('http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdgems_pf.htm')
+
 #HKEX Mainboard
 rawCODE <- readHTMLTable('http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm')
 n.rows <- unlist(lapply(rawCODE, function(t) dim(t)[1]))
@@ -36,7 +37,7 @@ print(paste('STOCKS in LIST : ',maxrows))
 mc=tail(mcr,maxrows) # mc is where everything resides now
 
 # the only ugly thing still left is the numbering of the mc dataframe
-# with row numbering starting with 2 ... but do knot know yet how to reset
+# with row numbering starting with 2 ... but do not know yet how to reset
 # access is working ok so 
 
 # for further usage for quantmod we need to massage the Symbols
@@ -69,9 +70,9 @@ tod=Sys.Date()
 
 # For later benchmark analysis we use the HSI
 getSymbols("^HSI",from=fromd)
-AINDEXret=dailyReturn(Cl(HSI)) # this now holds the HSI return series
-colnames(AINDEXret)="HSI Index"
-#tail(round(AINDEXret,4))
+hsiret=CalculateReturns(Cl(HSI)) # this now holds the HSI return series
+colnames(hsiret)="HSI Index"
+#tail(round(hsiret,4))
 
 #############################################################################
 # 5 Random Bernoulli Portfolio selections out of all listed stocks on the 
@@ -107,7 +108,7 @@ randomPf <-function(){
   ipfret=NULL
     
   pfret=CalculateReturns(tickers)
-  ipfret=merge(pfret,AINDEXret)
+  ipfret=merge(pfret,hsiret)
   
   charts.PerformanceSummary(ipfret["2012::"],colorset = cols,main=paste("5 out of",maxrows," Stocks - Random Portfolio No.:",k))
   chart.RiskReturnScatter(ipfret["2012::"],main=paste("Annualized Return and Risk  = Portfolio No.:",k), Rf = 0, colorset = cols,add.boxplots = TRUE)
@@ -133,7 +134,39 @@ print(" Portfolio of 5 stocks / row")
 print(z)
 
 ################################################################################
+# individual portfolio
+# here show all stocks of first 2 portfolios
+z[1:2,1:5]
 
+# here we reget data for a single stock first of first pf
+pfx=getSymbols(z[1][1])
+pfxd=get(pfx) # get the data
+# calc returns
+pfxdret=CalculateReturns(Cl(pfxd)
+# show what we got and a some tables
+tail(pfxdret)
+table.DownsideRiskRatio(pfxdret)
+table.AnnualizedReturns(pfxdret)
+
+
+# here we reget data for a several stocks 
+# here all stocks of first portfolio                      
+mpfx=getSymbols(z[1:1,1:5])
+allret=NULL
+xx=NULL
+for (i in (1:5)){
+  xx <- get(mpfx[i])
+  # calc returns
+  xxret=CalculateReturns(Cl(xx))
+  #colnames(xxret)=colnames(mpfx[i])
+  allret=cbind(allret,xxret)
+}  
+# show what we got and a some tables
+tail(allret)
+table.DownsideRiskRatio(allret)
+table.AnnualizedReturns(allret)
+table.Autocorrelation(allret)
+table.InformationRatio(allret,hsiret)
 
 
 
