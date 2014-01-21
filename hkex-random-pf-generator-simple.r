@@ -1,13 +1,16 @@
-# Random Portfolio creator based on HKEX Stocks
+# Initial idea of an Random Portfolio creator based on HKEX Stocks
 # selected from the mainboard or gemboard
 # http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm
-# Last tested 2013-08-01
+# Max stocks/portfolio = 5
+# Note in RStudio make sufficient space for the plots to avoid figure margin error
+# in case of errors rerun or change fromd (startdate ).
+# Last tested 2013-08-17
+# http://pastebin.com/5esJfkxK
 
 new.env()
 #rm(list = ls(all = TRUE)) #CLEAR WORKSPACE
 library(quantmod)
 library(PerformanceAnalytics)
-library(nnet)
 library(XML)
 library(RColorBrewer)
 
@@ -16,6 +19,11 @@ library(RColorBrewer)
 #currently max items to plot is 6
 cols <- colorRampPalette(brewer.pal(5,"Dark2"))(6)
 
+# start date for our data in case of errors
+# try other dates or rerun as some yahoo data may have issues
+fromd="2005-01-01"
+
+# select either GEM or Main board
 #HKEX GEM
 #rawCODE <- readHTMLTable('http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdgems_pf.htm')
 
@@ -23,22 +31,17 @@ cols <- colorRampPalette(brewer.pal(5,"Dark2"))(6)
 rawCODE <- readHTMLTable('http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm')
 n.rows <- unlist(lapply(rawCODE, function(t) dim(t)[1]))
 
-mcr=rawCODE[[which.min(n.rows-1)]]
-# now remove colname line of table
-mcr <- mcr[-c(1), ] 
+mcr=rawCODE[[which.min(n.rows)]]
+
 # change the colnames to what we actually want
 colnames(mcr)=c('SYMBOL','NAME','LOT','R1','R2','R3','R4')
 
 # this should be the actual stockcode count
-maxrows=n.rows[which.min(n.rows-1)]-1  
+maxrows=n.rows[which.min(n.rows-1)] 
 print(paste('STOCKS in LIST : ',maxrows))
 
 # show head/tails of what we got
 mc=tail(mcr,maxrows) # mc is where everything resides now
-
-# the only ugly thing still left is the numbering of the mc dataframe
-# with row numbering starting with 2 ... but do not know yet how to reset
-# access is working ok so 
 
 # for further usage for quantmod we need to massage the Symbols
 # into form xxxx.HK
@@ -47,7 +50,7 @@ mc[,1]=paste(mc[,1],'.HK',sep="")
 #now remove the first 0
 mc[,1]=substring(mc[,1], 2, 9)
 
-# see the magic
+# see the magic that is the stocks
 mch=head(mc)  
 print(mch)
 mct=tail(mc)
@@ -65,7 +68,6 @@ if (mc[,1][1] == "0001.HK"){
 myfunc<-function() if(.Platform$OS.type == "unix") {x11()} else {windows() }
 #############################################################################
 
-fromd="2010-01-01"
 tod=Sys.Date()
 
 # For later benchmark analysis we use the HSI
@@ -78,8 +80,6 @@ colnames(hsiret)="HSI Index"
 # 5 Random Bernoulli Portfolio selections out of all listed stocks on the 
 # HKEX stock mainboard each portfolio consisting of 5 stocks
 # Rerun this part as often as you like.
-
-fromd="2010-01-01"
 
 result <- function(sym){try(getSymbols(sym,from=fromd,auto.assign=FALSE))}
 
@@ -126,7 +126,7 @@ randomPf <-function(){
  return(pfcodes)
 }
 ############# end randomPf function #######
-
+# Main calling loop
 z=randomPf()
 colnames(z)=paste("Stock",1:5)
 rownames(z)=paste("Pf",1:5)
@@ -134,23 +134,29 @@ print(" Portfolio of 5 stocks / row")
 print(z)
 
 ################################################################################
-# individual portfolio
-# here show all stocks of first 2 portfolios
-z[1:2,1:5]
 
-# here we reget data for a single stock first of first pf
+# Here below some functions on how to access the data
+#
+# Individual portfolio
+# Show all stocks of first 2 portfolios
+print ('Portfolios 1 and 2')
+print (z[1:2,1:5])
+
+# Reget data for a single stock 
+# First stock of first portfolio
+
 pfx=getSymbols(z[1][1])
 pfxd=get(pfx) # get the data
 # calc returns
-pfxdret=CalculateReturns(Cl(pfxd)
+pfxdret=CalculateReturns(Cl(pfxd))
 # show what we got and a some tables
 tail(pfxdret)
 table.DownsideRiskRatio(pfxdret)
 table.AnnualizedReturns(pfxdret)
 
 
-# here we reget data for a several stocks 
-# here all stocks of first portfolio                      
+# Here we reget data for a several stocks 
+# All stocks of first portfolio                      
 mpfx=getSymbols(z[1:1,1:5])
 allret=NULL
 xx=NULL
@@ -161,7 +167,7 @@ for (i in (1:5)){
   #colnames(xxret)=colnames(mpfx[i])
   allret=cbind(allret,xxret)
 }  
-# show what we got and a some tables
+# Example : Show what we got and a some tables
 tail(allret)
 table.DownsideRiskRatio(allret)
 table.AnnualizedReturns(allret)
@@ -169,4 +175,47 @@ table.Autocorrelation(allret)
 table.InformationRatio(allret,hsiret)
 
 
+# Example : Another tabulator
+# Showing data or first portfolio
 
+atable=function(Ret){
+  mytable=table.Arbitrary(Ret,metrics=c("Return.annualized","StdDev.annualized","SharpeRatio.annualized","maxDrawdown"),metricsNames=c("Return (Annualized)","StDev (Annualized)","Sharpe Ratio (Annualized)","MaxDrawdown"))
+  return (mytable)
+}
+
+# Reusing returns from above example
+print (atable(allret))
+
+
+print ("Finished and going home. Good Bye.")
+
+
+# SessionInfo
+# 
+# 
+# R version 2.15.2 (2012-10-26)
+# Platform: x86_64-suse-linux-gnu (64-bit)
+# 
+# locale:
+#   [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+# [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+# [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+# [7] LC_PAPER=C                 LC_NAME=C                 
+# [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+# [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+# 
+# attached base packages:
+#   [1] compiler  stats     graphics  grDevices utils     datasets 
+# [7] methods   base     
+# 
+# other attached packages:
+#   [1] RColorBrewer_1.0-5         XML_3.98-1.1              
+# [3] nnet_7.3-5                 PerformanceAnalytics_1.1.0
+# [5] quantmod_0.4-0             TTR_0.22-0                
+# [7] xts_0.9-5                  zoo_1.7-10                
+# [9] Defaults_1.1-1            
+# 
+# loaded via a namespace (and not attached):
+#   [1] grid_2.15.2     lattice_0.20-10 tools_2.15.2   
+# 
+# 

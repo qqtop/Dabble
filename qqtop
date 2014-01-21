@@ -1,2 +1,13 @@
- 
+# Remainder of some git stuff
+
+Interface
+gitk
 /usr/lib/git/git-gui
+
+Commandline
+git status
+git log --pretty=format:"%h - %an, %ar : %s"
+
+
+Help
+http://git-scm.com/doc
