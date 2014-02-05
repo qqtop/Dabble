@@ -2,8 +2,8 @@ require(quantmod)
 
 #High Low plot within a n day timeframe , code based on a stockoverflow snippet
 
-aname="0067.HK"
-fromd="2010-01-01"
+aname="0386.HK"
+fromd="2013-01-01"
 tod=Sys.Date()
 setSymbolLookup(ASTOCK=list(from=fromd,to=tod,name=aname))
 getSymbols("ASTOCK")
