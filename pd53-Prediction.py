@@ -3,6 +3,7 @@ import statsmodels.api as sm
 
 # http://statsmodels.sourceforge.net/devel/examples/notebooks/generated/predict.html
 
+
 #Create some data
 nsample = 50
 sig = 0.25
