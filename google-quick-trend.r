@@ -2,6 +2,7 @@ library(RGoogleTrends)
 library(quantmod)
 library(stringr)
 
+
 # A test program for google trends api in R
 
 # for this to work you need to be logged into google
