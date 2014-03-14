@@ -4,6 +4,7 @@ import pandas as pd
 import urllib2
 
 
+
 # Nice !! 2014/02/05
 # based on
 # http://www.quantstart.com/articles/Sharpe-Ratio-for-Algorithmic-Trading-Performance-Measurement
