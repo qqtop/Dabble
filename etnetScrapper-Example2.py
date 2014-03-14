@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
 
+
 # A mixed python/R script
 
 # try to run like python -m cProfile etnetScrapper-Example2.py 
