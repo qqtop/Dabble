@@ -59,5 +59,5 @@ legend("bottomleft", leg.txt, fill=colors)
 #dev.off()
 
 ################# THATS IT ########################################
-#quit("no")
+
 
