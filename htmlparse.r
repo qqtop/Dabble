@@ -4,6 +4,7 @@ library(stringr)
 library(PerformanceAnalytics)
 library(Hmisc)
 
+
 # Parsing example of how to scrap BANK of China live currency data
 # updated about every 15 minutes or so
 # Now we can use latest data from BANK OF CHINA rather than OANDA ......
