@@ -32,10 +32,7 @@ def stockinfos(sym):
     dataflag=True
     last=1
   
-  #stock = k[0][0]
-  #hi    = float(k[0][1])
-  #lo    = float(k[0][2])
-  #last  = float(k[0][3])
+
   try:
     z     = float((last-lo)/(hi-lo))
   except:
