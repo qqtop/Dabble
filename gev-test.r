@@ -8,6 +8,8 @@ require(grid)
 require(gridExtra)
 
 
+
+
 # Function for drawing table / segments
 
  TableMaker<-function(table_seg,size=nrow(table_seg),title){
