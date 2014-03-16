@@ -1,4 +1,5 @@
 # draw a grid in random color shades
+
 rm(list=ls())
 library(grid)
 

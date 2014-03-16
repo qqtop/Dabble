@@ -3,6 +3,7 @@ library(quantmod)
 library(PerformanceAnalytics)
 library(plyr)
 
+
 # quick stock test without setSymbolLookup
 options(digits=3)
 fromd=Sys.Date()-365*5  # abt 5 years

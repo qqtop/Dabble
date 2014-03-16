@@ -7,6 +7,7 @@
 # Last tested 2013-08-17
 # http://pastebin.com/5esJfkxK
 
+
 new.env()
 #rm(list = ls(all = TRUE)) #CLEAR WORKSPACE
 library(quantmod)

@@ -4,6 +4,7 @@ import urllib
 import sys
  
 ## Simple Portfolio Status --- what's going on while you had your coffee etc.
+
  
 def stockinfos(sym):
   site  = "http://finance.yahoo.com/d/quotes.csv?s="

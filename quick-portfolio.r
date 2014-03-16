@@ -1,7 +1,7 @@
 
 # quick-portfolio.r
 # Version. 01
-# 
+
 
 library(quantmod)
 library(PerformanceAnalytics)

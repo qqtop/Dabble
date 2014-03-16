@@ -10,6 +10,7 @@ library(PerformanceAnalytics)
 
 # data changed for hongkong shares and reporting and some comments added
 
+
 ## How to run this code ??
 ## in R-Stuidio increase the plot window size 
 

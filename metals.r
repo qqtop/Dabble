@@ -1,6 +1,7 @@
 library(quantmod)
 library(PerformanceAnalytics)
 
+
 getMetals(c("XAU","XAG","XPD","XPT"),from=Sys.Date()-30)
 #        GOLD    SILVER    PALLAD. PLATINUM
 #metprices=cbind(XAUUSD,XAGUSD,XPDUSD,XPTUSD)

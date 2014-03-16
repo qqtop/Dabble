@@ -5,6 +5,7 @@ require(blotter)
 
 #BBANDS strategy  --> appears to beat faber strategy see faber-2.r
 
+
 suppressWarnings(rm("order_book.bbands",pos=.strategy))
 suppressWarnings(rm("account.bbands","portfolio.bbands",pos=.blotter))
 suppressWarnings(rm("account.st","portfolio.st","stock.str","stratBBands","initDate","initEq",'start_t','end_t'))

@@ -2,6 +2,7 @@
 require(rugarch)
 require(quantmod)
 
+
 tic = Sys.time()                   # time the whole process
 Sys.setenv(TZ="Asia/Hong Kong")    # change time zone as required
 #Sys.setenv(TZ="GMT")              # switch to GMT if needed

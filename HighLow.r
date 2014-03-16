@@ -2,7 +2,6 @@ require(quantmod)
 
 #High Low plot within a n day timeframe , code based on a stockoverflow snippet
 
-
 aname="0386.HK"
 fromd="2013-01-01"
 tod=Sys.Date()

@@ -5,6 +5,7 @@ library(PerformanceAnalytics)
 ### PerformanceAnalytics and fAssets.
 
 
+
 #Time frame
 fromd="2000-01-01"
 tod=Sys.Date()

@@ -1,7 +1,8 @@
 require(PerformanceAnalytics)
 require(quantmod)
 
-### Analytics of any 2 Hongkong Shares charts versus HSI  
+### Analytics of any 2 Hongkong Shares charts versus HSI 
+
 
 # Enter desired share code here below most calculations 
 # will be done with year start 2011

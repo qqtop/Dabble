@@ -4,7 +4,6 @@ require(quantmod)
 require(PerformanceAnalytics)
 
 
-
 marketreturns <- function(ASTOCK,aname){
  m <- lapply(d, getMonth)
  t <- monthlyReturn(Cl(ASTOCK))

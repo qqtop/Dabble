@@ -2,6 +2,7 @@ require(rugarch)
 require(snowfall) # for parallel cpu use
 
 
+
 # Keep . No Modify
 # Examples ex rugarch 1.0.7 info vignette : introduction_to_the_rugarch_package.pdf
 # slightly enhanced for own demonstration 

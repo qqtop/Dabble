@@ -4,6 +4,9 @@ require(lattice)
 require(Hmisc)
 require(diagram)
 
+# Some Analysis on a stock from HKSE
+
+
 try(rm(ASTOCK),silent=TRUE)
 
 ## setup 

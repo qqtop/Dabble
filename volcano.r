@@ -3,6 +3,7 @@ library(XML)
 
 # Earthquakes and Volcanoes on one map
 
+
 ############ Earthquakes last 7 days
 
 # get the earthquake data from the USGS

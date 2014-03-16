@@ -5,6 +5,7 @@ require(PerformanceAnalytics)
 # http://www.r-bloggers.com/since-my-last-trip-to-disney/
 
 
+
 fromd=Sys.Date()-730
 tod=Sys.Date()
 

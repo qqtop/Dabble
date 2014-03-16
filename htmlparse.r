@@ -9,6 +9,7 @@ library(Hmisc)
 # updated about every 15 minutes or so
 # Now we can use latest data from BANK OF CHINA rather than OANDA ......
 # note a file tmpforex will be created and after usage removed
+# occasionally url might change a bit...
 # 2011/11/19
 
 
