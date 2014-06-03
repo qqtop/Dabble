@@ -6,6 +6,7 @@ library(grid)
 #dev.new()
 
 
+
 new_color <- function()
    
  {
