@@ -2,15 +2,24 @@ Dabble - Small Test Projects and Scripts
 ==========================================
 
 
-Started                | 2011 - Oct -21
 
-Languages              | R , Python , Nim
+| Note                   | Info                                            |
+| ---------------------- |:-----------------------------------------------:| 
 
-Database               | Firebird 2.5.4 Superserver , Postgresql 9.4 
+| Started                | 2011 - Oct -21                                  |
 
-Development Platform   | Opensuse 13.2 
+| Languages              | R , Python , Nim                                |  
 
-Server Platform        | Ubuntu 14.04 
+| Database               | Firebird 2.5.4 Superserver , Postgresql 9.4     |
+
+| Development Platform   | Opensuse 13.2                                   |
+
+| Server Platform        | Ubuntu 14.04                                    | 
+
+| Last                   | 2015                                            |
+
+
+
 
 
 
