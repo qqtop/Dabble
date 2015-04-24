@@ -2,7 +2,7 @@ Dabble - Small Test Projects and Scripts
 ==========================================
 
 
-| Left-Aligned           | Left-Aligned                                    | 
+| Info                   | Data                                            | 
 |:---------------------- |:-----------------------------------------------:| 
 | Started                | 2011 - Oct -21                                  |
 | Languages              | R , Python , Nim                                | 
